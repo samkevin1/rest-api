@@ -1,1 +1,1 @@
-web: API/python manage.py runserver
+web: gunicorn rest-api/profiles_project/wsgi
