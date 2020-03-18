@@ -1,12 +1,17 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView
 from rest_framework import permissions
 
 from . import serializers
 from core import models
 from . import permissions as custom_permission
+
+
+class ListUser(ListAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
 
 
 class UserProfileViewSet(CreateAPIView):
