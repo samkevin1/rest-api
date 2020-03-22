@@ -1,1 +1,1 @@
-web: gunicorn rest-api/manage.py
+web: gunicorn rest-api/wsgi
