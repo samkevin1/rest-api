@@ -1,1 +1,1 @@
-web: gunicorn pele-marreta.wsgi
+web: gunicorn .wsgi
