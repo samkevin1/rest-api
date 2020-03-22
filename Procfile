@@ -1,1 +1,1 @@
-web: gunicorn rest-api.wsgi
+web: gunicorn pele-marreta.wsgi
