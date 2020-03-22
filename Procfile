@@ -1,1 +1,1 @@
-web: gunicorn rest-api/profiles_project/wsgi
+web: gunicorn rest-api/manage.py
