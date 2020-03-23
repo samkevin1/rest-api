@@ -6,13 +6,13 @@ import {
   Switch,
   BrowserRouter as Router
 } from 'react-router-dom';
-import Header from './componentes/Header/index';
-import CadastrarUsuario from './pages/Usuario/Cadastrar/index';
-import CadastrarCategoria from './pages/Categoria/Cadastrar/index';
-import CadastrarProduto from './pages/Produto/Cadastrar/index';
-import ListarUsuarios from './pages/Usuario/Listar/index';
-import ListarCategorias from './pages/Categoria/Listar/index';
-import ListarProdutos from './pages/Produto/Listar/index';
+import Header from './components/Header/index';
+import CreateUser from './pages/User/Create/index';
+import CreateCategory from './pages/Category/Create/index';
+import CreateProduct from './pages/Product/Create/index';
+import ListUsers from './pages/User/List/index';
+import ListCategories from './pages/Category/List/index';
+import ListProducts from './pages/Product/List/index';
 import Dashboard from './pages/Dashboard/index';
 
 function App() {
@@ -24,12 +24,12 @@ function App() {
           <div class="main-content">
             <Switch>
               <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/cadastrar/usuario" component={CadastrarUsuario} />
-              <Route exact path="/cadastrar/categoria" component={CadastrarCategoria} />
-              <Route exact path="/cadastrar/produto" component={CadastrarProduto} />
-              <Route exact path="/usuarios" component={ListarUsuarios} />
-              <Route exacth path="/categorias" component={ListarCategorias} />
-              <Route exacth path="/produtos" component={ListarProdutos} />
+              <Route exact path="/cadastrar/usuario" component={CreateUser} />
+              <Route exact path="/cadastrar/categoria" component={CreateCategory} />
+              <Route exact path="/cadastrar/produto" component={CreateProduct} />
+              <Route exact path="/usuarios" component={ListUsers} />
+              <Route exacth path="/categorias" component={ListCategories} />
+              <Route exacth path="/produtos" component={ListProducts} />
             </Switch>
           </div>
         </div>

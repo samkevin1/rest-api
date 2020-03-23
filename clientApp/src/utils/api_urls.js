@@ -1,9 +1,10 @@
 export default {
-  cadastrar_usuario: '/api/v1/usuario/cadastrar',
-  cadastrar_categoria: 'api/v1/categoria/cadastrar',
-  cadastrar_produto: 'api/v1/despesa/cadastrar',
-  obter_todas_categorias: 'api/v1/categorias',
-  obter_todos_produtos: 'api/v1/produtos',
-  obter_todos_usuarios: '/api/v1/usuarios',
-  obter_usuario_por_id: 'api/v1/usuario'
+  create_user: '/api/v1/user/create',
+  create_catalog: '/api/v1/catalog/create',
+  create_product: '/api/v1/product/create',
+  get_all_categories: '/api/v1/catalog/list',
+  get_all_products: '/api/v1/product/list',
+  get_all_users: '/api/v1/user/list',
+  get_user_by_id: '/api/v1/user/',
+  login:'/api/v1/user/login'
 };
