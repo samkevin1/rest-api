@@ -15,11 +15,12 @@ export default () => {
     http_request
       .get(api_urls.get_all_users)
       .then(res => {
-        if (res.data.sucesso) {
+        console.log(res)
+        if (res.data.success) {
           set_loading(false);
           set_error(false);
           set_success(true);
-          set_users(res.data.dados);
+          set_users(res.data.data);
         } else {
           set_loading(false);
           set_error(true);

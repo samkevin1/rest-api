@@ -27,13 +27,13 @@ export default function() {
               http_request
                 .post(api_urls.create_catalog, values)
                 .then(res => {
-                  if (res.data.sucesso) {
-                    swal({ title: 'Sucesso', text: res.data.mensagem, icon: 'success',buttons: { cancel: 'Ok' } })
+                  if (res.data.success) {
+                    swal({ title: 'Sucesso', text: res.data.message, icon: 'success',buttons: { cancel: 'Ok' } })
                     .then(() => {
                       history.push('/categorias');
                     });
                   } else {
-                    swal({ title: 'Erro', text: res.data.mensagem, icon: 'error', buttons: { cancel: 'Ok' } });
+                    swal({ title: 'Erro', text: res.data.message, icon: 'error', buttons: { cancel: 'Ok' } });
                   }
                 })
                 .catch(err => {

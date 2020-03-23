@@ -14,11 +14,11 @@ export default () => {
         http_request
         .get(api_urls.get_user_by_id)
         .then(res => {
-            if (res.data.sucesso) {
+            if (res.data.success) {
             set_loading(false);
             set_error(false);
             set_success(true);
-            set_user(res.data.dados);
+            set_user(res.data.data);
             } else {
             set_loading(false);
             set_error(true);

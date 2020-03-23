@@ -40,10 +40,10 @@ export default function() {
               http_request
                 .post(api_urls.create_user, values)
                 .then(res => {
-                  if (res.data.sucesso) {
+                  if (res.data.success) {
                     swal({
                       title: 'Sucesso',
-                      text: res.data.mensagem,
+                      text: res.data.message,
                       icon: 'success',
                       buttons: { cancel: 'Ok' }
                     }).then(() => {
@@ -52,7 +52,7 @@ export default function() {
                   } else {
                     swal({
                       title: 'Erro',
-                      text: res.data.mensagem,
+                      text: res.data.message,
                       icon: 'error',
                       buttons: { cancel: 'Ok' }
                     });
