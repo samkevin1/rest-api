@@ -16,15 +16,16 @@ export default function() {
             text: 'Carregando informações, aguarde...',
             buttons: { cancel: 'Ok' }
         });
-        http_request.get(api_urls.obter_todas_categorias).then((res) => {
-            if(res.data.sucesso){
+        http_request.get(api_urls.get_all_categories).then((res) => {
+            console.log(res)
+            if(res.data && res.statusText === "OK"){
                 swal({
                     title: 'Sucesso',
                     text: "Informações carregadas com sucesso.",
                     icon: 'success',
                     buttons: { cancel: 'Ok' }
                 });
-                set_categories(res.data.dados);
+                set_categories(res.data);
             }
             else {
                 swal({
@@ -73,19 +74,19 @@ export default function() {
                         .then(res => {
                             if (res.data.sucesso) {
                                 swal({
-                                title: 'Sucesso',
-                                text: res.data.mensagem,
-                                icon: 'success',
-                                buttons: { cancel: 'Ok' }
+                                    title: 'Sucesso',
+                                    text: res.data.mensagem,
+                                    icon: 'success',
+                                    buttons: { cancel: 'Ok' }
                                 }).then(() => {
                                     history.push('/produtos');
                                 });
                             } else {
                                 swal({
-                                title: 'Erro',
-                                text: res.data.mensagem,
-                                icon: 'error',
-                                buttons: { cancel: 'Ok' }
+                                    title: 'Erro',
+                                    text: res.data.mensagem,
+                                    icon: 'error',
+                                    buttons: { cancel: 'Ok' }
                                 });
                             }
                         })

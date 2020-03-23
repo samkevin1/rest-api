@@ -16,7 +16,7 @@ export default () => {
       .get(api_urls.get_all_users)
       .then(res => {
         console.log(res)
-        if (res.data.success) {
+        if (res.data) {
           set_loading(false);
           set_error(false);
           set_success(true);

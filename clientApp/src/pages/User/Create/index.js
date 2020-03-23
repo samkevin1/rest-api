@@ -22,7 +22,6 @@ export default function() {
               cpf: '',
               rg: '',
               email: '',
-              celular: '',
               birth_date: new Date(),
               telephone: '',
               password: '',
@@ -30,6 +29,7 @@ export default function() {
             }}
             validationSchema={validation}
             onSubmit={values => {
+              console.log(values)
               if(values.birth_date == null){
                 values.birth_date = new Date();
               }
@@ -40,6 +40,7 @@ export default function() {
               http_request
                 .post(api_urls.create_user, values)
                 .then(res => {
+                  console.log(res)
                   if (res.data.success) {
                     swal({
                       title: 'Sucesso',
@@ -47,7 +48,7 @@ export default function() {
                       icon: 'success',
                       buttons: { cancel: 'Ok' }
                     }).then(() => {
-                      history.push('/users');
+                      history.push('/usuarios');
                     });
                   } else {
                     swal({

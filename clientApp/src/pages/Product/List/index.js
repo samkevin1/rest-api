@@ -15,7 +15,7 @@ export default () => {
     http_request
       .get(api_urls.get_all_products)
       .then(res => {
-        if (res.data.sucesso) {
+        if (res.data) {
           set_loading(false);
           set_error(false);
           set_success(true);

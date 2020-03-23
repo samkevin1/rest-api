@@ -1,6 +1,6 @@
 export default {
   create_user: '/api/v1/user/create',
-  create_catalog: '/api/v1/catalog/create',
+  create_catalog: '/api/v1/catalog/create/',
   create_product: '/api/v1/product/create',
   get_all_categories: '/api/v1/catalog/list',
   get_all_products: '/api/v1/product/list',

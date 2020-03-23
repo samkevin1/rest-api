@@ -13,13 +13,13 @@ export default () => {
 
   useEffect(() => {
     http_request
-      .get(api_urls.get_all_catalogs)
+      .get(api_urls.get_all_categories)
       .then(res => {
-        if (res.data.sucesso) {
+        if (res.data) {
           set_loading(false);
           set_error(false);
           set_success(true);
-          set_categories(res.data.dados);
+          set_categories(res.data);
         } else {
           set_loading(false);
           set_error(true);

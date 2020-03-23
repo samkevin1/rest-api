@@ -19,7 +19,8 @@ export default function() {
             <Formik
             initialValues={{
               name: '',
-              description: ''
+              description: '',
+              products: []
             }}
             validationSchema={validation}
             onSubmit={values => {
@@ -27,16 +28,17 @@ export default function() {
               http_request
                 .post(api_urls.create_catalog, values)
                 .then(res => {
-                  if (res.data.success) {
-                    swal({ title: 'Sucesso', text: res.data.message, icon: 'success',buttons: { cancel: 'Ok' } })
+                  if (res.statusText === "Created") {
+                    swal({ title: 'Sucesso', text: "Categoria criada com sucesso!", icon: 'success',buttons: { cancel: 'Ok' } })
                     .then(() => {
                       history.push('/categorias');
                     });
                   } else {
-                    swal({ title: 'Erro', text: res.data.message, icon: 'error', buttons: { cancel: 'Ok' } });
+                    swal({ title: 'Erro', text: "Ocorreu um erro e por conta disso não possível criar uma categoria.", icon: 'error', buttons: { cancel: 'Ok' } });
                   }
                 })
                 .catch(err => {
+                  console.log(err)
                   swal({ title: 'Erro', text: 'Ocorreu um erro interno no servidor, contate o administrador do sistema.',
                     icon: 'error',
                     buttons: { cancel: 'Ok' }
