@@ -8,7 +8,7 @@ from . import views
 router = DefaultRouter()
 
 class Response:
-    def __init__(success, data):
+    def __init__(self, success, data):
         self.success = success
         self.data = data
 
