@@ -6,6 +6,7 @@ from . import views
 
 
 router = DefaultRouter()
+router.register(r'', Response(True, views.ListUser))
 
 class Response:
     def __init__(self, success, data):
@@ -14,8 +15,9 @@ class Response:
 
 
 urlpatterns = [
-    path('', Response(True, views.ListUser)),
     path('login/', views.UserLoginApiView.as_view()),
     path('create/', views.UserProfileViewSet.as_view()),
     path('me/', views.ManageUserView.as_view(), name='me'),
 ]
+
+urlpatterns += router.urls
