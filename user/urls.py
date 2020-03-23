@@ -4,14 +4,13 @@ from rest_framework.routers import DefaultRouter
 
 from . import views
 
-
-router = DefaultRouter()
-router.register(r'', Response(True, views.ListUser))
-
 class Response:
     def __init__(self, success, data):
         self.success = success
         self.data = data
+
+router = DefaultRouter()
+router.register(r'', Response(True, views.ListUser))
 
 
 urlpatterns = [
