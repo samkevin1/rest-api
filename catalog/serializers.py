@@ -11,5 +11,5 @@ class CatalogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Catalog
-        fields = ('id', 'description', 'products',)
+        fields = ('id', 'name', 'description', 'products',)
         read_only_fields = ('id',)
