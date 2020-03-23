@@ -8,8 +8,8 @@ from core import models
 
 class ProductListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     """Only authenticated users can see"""
-    authentication_classes = (authentication.TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    #authentication_classes = (authentication.TokenAuthentication,)
+   # permission_classes = (permissions.IsAuthenticated,)
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
 
