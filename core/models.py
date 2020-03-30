@@ -8,13 +8,16 @@ from django.conf import settings
 class UserManager(BaseUserManager):
     """Manager for user profiles"""
 
-    def create_user(self, email, name, password=None):
+    def create_user(self, email, name, rg, cellphone, telephone, last_name, birth_date, cpf, password=None,):
         """Create a new user profile"""
         if not email:
             raise ValueError('User must have an email address')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        user = self.model(email=email, name=name, rg=rg, cpf=cpf,
+                          cellphone=cellphone, telephone=telephone,
+                          last_name=last_name, birth_date=birth_date,
+                          )
 
         user.set_password(password)
         user.save(using=self._db)
@@ -36,12 +39,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     cpf = models.CharField(max_length=14, unique=True)
     rg = models.CharField(max_length=14, unique=True)
     cellphone = models.CharField(max_length=12)
     telephone = models.CharField(max_length=12)
-    birth_date = models.DateTimeField()
+    birth_date = models.DateField()
     date_created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
