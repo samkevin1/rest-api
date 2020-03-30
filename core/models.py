@@ -45,7 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     rg = models.CharField(max_length=14, unique=True)
     cellphone = models.CharField(max_length=12)
     telephone = models.CharField(max_length=12)
-    birth_date = models.DateField()
+    birth_date = models.DateField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

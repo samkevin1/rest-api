@@ -45,3 +45,10 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+    def delete(self, instance, validated_data):
+        """Handle updating user account"""
+        instance.is_active = False
+        instance.save()
+
+        return instance

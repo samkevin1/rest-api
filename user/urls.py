@@ -7,10 +7,10 @@ from . import views
 router = DefaultRouter()
 
 urlpatterns = [
-    path('', views.ListUser.as_view()),
+    path('list/', views.list),
     path('login/', views.UserLoginApiView.as_view()),
-    path('create/', views.CreateUserView.as_view()),
-    path('me/', views.GetUserById.as_view(), name='me'),
-    path(r'update/', views.UpdateUserView.as_view()),
-    path('delete/', views.DeleteUserView.as_view())
+    path('create/', views.create),
+    path('list/<str:pk>/', views.retrieve),
+    path('update/<str:pk>/', views.update),
+    path('delete/<str:pk>/', views.DeleteUserView.as_view())
 ]
