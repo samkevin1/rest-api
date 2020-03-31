@@ -19,7 +19,7 @@ def list(request, *args, **kwargs):
     serializer = serializers.UserSerializer(user, many=True)
     return Response({
         'success': True,
-        'message': 'Usuários listados com sucesso!',
+        'message': 'Usuários listados com sucesso.',
         'data': serializer.data
     })
 
