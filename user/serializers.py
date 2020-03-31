@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.User
         fields = ('id', 'email', 'name', 'last_name',
                   'password', 'cpf', 'rg', 'cellphone',
-                  'telephone', 'birth_date')
+                  'telephone', 'birth_date', 'is_active')
         extra_kwargs = {
             'password': {
                 'write_only': True,
@@ -30,6 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
             telephone=validated_data['telephone'],
             birth_date=validated_data['birth_date'],
             rg=validated_data['rg'],
+            is_active=True
         )
 
         return user
@@ -41,14 +42,12 @@ class UserSerializer(serializers.ModelSerializer):
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.cellphone = validated_data.get('cellphone', instance.cellphone)
         instance.telephone = validated_data.get('telephone', instance.telephone)
-        instance.is_active = validated_data.get('is_active', instance.is_active)
         instance.save()
 
         return instance
 
     def delete(self, instance, validated_data):
         """Handle updating user account"""
-        instance.is_active = False
         instance.save()
 
         return instance

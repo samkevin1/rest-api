@@ -16,7 +16,7 @@ from core import models
 @api_view(['GET'])
 def list(request, *args, **kwargs):
     user = models.User.objects.filter(is_active=True)
-    serializer = serializers.UserSerializer(user, many=True, is_active=True)
+    serializer = serializers.UserSerializer(user, many=True)
     return Response({
         'success': True,
         'message': 'Usuários listados com sucesso!',
