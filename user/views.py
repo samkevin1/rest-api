@@ -14,22 +14,30 @@ from core import models
 
 
 @api_view(['GET'])
-def list(request, *args, **kwargs):
-    user = models.User.objects.filter(is_active=True)
-    serializer = serializers.UserSerializer(user, many=True)
-    return Response({
-        'success': True,
-        'message': 'Usuários listados com sucesso.',
-        'data': serializer.data
-    })
-
+def get_all(request, *args, **kwargs):
+    try:
+        user = models.User.objects.filter(is_active=True)
+        serializer = serializers.UserSerializer(user, many=True)
+        return Response({
+            'success': True,
+            'message': 'Usuários listados com sucesso.',
+            'data': serializer.data
+        })
+    except RuntimeError:
+        raise RuntimeError("Ocorreu um erro interno no servidor.")
 
 @api_view(['GET'])
-def retrieve(request, pk):
+def get_by_id(request, pk):
+    try:
+        user = models.User.objects.get(id=pk, is_active=True)
+        serializer = serializers.UserSerializer(user, many=False)
+        return Response(serializer.data)
 
-    user = models.User.objects.get(id=pk)
-    serializer = serializers.UserSerializer(user, many=False)
-    return Response(serializer.data)
+    except models.User.DoesNotExist:
+        return Response({'success': False, 'message': 'Não existe nenhum usuário cadastrado com esse id.', 'data': []})
+
+    except RuntimeError:
+        raise RuntimeError("Ocorreu um erro interno no servidor.")
 
 
 @api_view(['POST'])
