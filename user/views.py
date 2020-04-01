@@ -1,16 +1,16 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView,\
-                                    DestroyAPIView, UpdateAPIView, RetrieveAPIView, GenericAPIView
-from utils import response_handler
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 from django.core import exceptions
+import datetime
 
 from . import serializers
 from core import models
+from utils import response_handler
 
 @api_view(['GET'])
 def get_all(request, *args, **kwargs):
@@ -51,7 +51,6 @@ def get_by_id(request, pk):
     except RuntimeError:
         raise RuntimeError("Ocorreu um erro interno no servidor.")
 
-
 @api_view(['POST'])
 def create(request, *args, **kwargs):
     try:
@@ -84,16 +83,35 @@ def update(request, pk):
     except RuntimeError:
         raise RuntimeError("Ocorreu um erro interno no servidor.")
 
-@api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
-@authentication_classes([TokenAuthentication])
-def delete(request, pk, validated_data, instance):
+@api_view(['DELETE'])
+def delete(pk):
     try:
-        queryset = models.User.objects.get(id=pk)
-        serializer = serializers.UserSerializer(instance=queryset, data=request.data, partial=True)
-        serializer.save()
+        user = models.User.objects.get(id=pk)
+        user.is_active = False
 
-        return response_handler.success('Usuário deletado com sucesso.', [])
+        #temporary, because exists objects with this prop == null
+        user.birth_date = datetime.datetime.now()
+        user.save()
+
+        return response_handler.success('Usuário desativado com sucesso.', [])
+
+    except models.User.DoesNotExist:
+        return response_handler.not_found("Não foi encontrado nenhum usuário com esse id.")
+
+    except RuntimeError as e:
+        return(e)
+
+@api_view(['PUT'])
+def active(pk):
+    try:
+        user = models.User.objects.get(id=pk)
+        user.is_active = True
+
+        #temporary, because exists objects with this prop == null
+        user.birth_date = datetime.datetime.now()
+        user.save()
+
+        return response_handler.success('Usuário ativado com sucesso.', [])
 
     except models.User.DoesNotExist:
         return response_handler.not_found("Não foi encontrado nenhum usuário com esse id.")
@@ -104,10 +122,3 @@ def delete(request, pk, validated_data, instance):
 class UserLoginApiView(ObtainAuthToken):
     """Handle creating user authentication tokens"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
-
-class DeleteUserView(DestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = serializers.UserSerializer
-    queryset = models.User.objects.all()
-    lookup_field = 'user_token'
