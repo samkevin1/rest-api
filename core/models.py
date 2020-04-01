@@ -59,6 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Catalog(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=511)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -70,6 +71,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     description = models.CharField(max_length=511)
     catalog_id = models.ForeignKey(Catalog, related_name='products', on_delete=models.CASCADE)
-
+    is_active = models.BooleanField(default=True)
+    
     def __str__(self):
         return self.name

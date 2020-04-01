@@ -4,9 +4,13 @@ from . import views
 
 router = DefaultRouter()
 
-router.register(r'list', views.ProductListViewSet)
-
 urlpatterns = [
-    path('', include(router.urls)),
-    path('create/', views.CreateProduct.as_view()),
+    path('list/', views.get_all),
+    path('disabled/list/', views.get_all_disabled),
+    path('create/', views.create),
+    path('details/<int:pk>/', views.get_by_id),
+    path('update/<int:pk>/', views.update),
+    path('delete/<int:pk>/', views.delete),
+    path('active/<int:pk>/', views.active)
 ]
+
