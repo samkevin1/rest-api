@@ -8,6 +8,7 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('list/', views.get_all),
+    path('disable/list', views.get_all_disabled),
     path('login/', views.UserLoginApiView.as_view()),
     path('create/', views.create),
     path('details/<str:pk>/', views.get_by_id),
