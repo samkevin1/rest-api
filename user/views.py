@@ -3,7 +3,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView,\
                                     DestroyAPIView, UpdateAPIView, RetrieveAPIView, GenericAPIView
-
+from utils import response_handler
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -12,17 +12,16 @@ from django.core import exceptions
 from . import serializers
 from core import models
 
-
 @api_view(['GET'])
 def get_all(request, *args, **kwargs):
     try:
         user = models.User.objects.filter(is_active=True)
         serializer = serializers.UserSerializer(user, many=True)
-        return Response({
-            'success': True,
-            'message': 'Usuários listados com sucesso.',
-            'data': serializer.data
-        })
+        return response_handler.success('Usuários ativos carregados com sucesso.', serializer.data, len(serializer.data))
+
+    except models.User.DoesNotExist:
+        return response_handler.not_found('Não há nenhum usuário ativo cadastrado no sistema.')
+
     except RuntimeError:
         raise RuntimeError("Ocorreu um erro interno no servidor.")
 
@@ -31,10 +30,10 @@ def get_by_id(request, pk):
     try:
         user = models.User.objects.get(id=pk, is_active=True)
         serializer = serializers.UserSerializer(user, many=False)
-        return Response(serializer.data)
+        return response_handler.success('Usuário carregado com sucesso.', serializer.data)
 
     except models.User.DoesNotExist:
-        return Response({'success': False, 'message': 'Não existe nenhum usuário cadastrado com esse id.', 'data': []})
+        return response_handler.not_found('Não existe nenhum usuário cadastrado com esse id.')
 
     except RuntimeError:
         raise RuntimeError("Ocorreu um erro interno no servidor.")
@@ -42,52 +41,44 @@ def get_by_id(request, pk):
 
 @api_view(['POST'])
 def create(request, *args, **kwargs):
-
     serializer = serializers.UserSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
-        return Response({
-            'success': True,
-            'message': 'Usuário criado com sucesso!',
-            'data': serializer.data
-        })
+        return response_handler.success('Usuário cadastrado com sucesso.', serializer.data)
     else:
-        return Response({
-            'success': False,
-            'message': 'Erro na criação do usuário!',
-            'data': []
-        })
+        return response_handler.error_has_ocurred('Ocorreu um erro na criação do usuário.', [])
 
 
 @api_view(['PUT'])
 @permission_classes([permissions.IsAuthenticated])
 @authentication_classes([TokenAuthentication])
 def update(request, pk):
+    try:
+        queryset = models.User.objects.get(id=pk)
+        serializer = serializers.UserSerializer(instance=queryset, data=request.data, partial=True)
+        
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return response_handler.success('Usuário alterado com sucesso.', serializer.data)
+        else:
+            return response_handler.error_has_ocurred('Ocorreu um erro na alteração do usuário.', [])
 
-    queryset = models.User.objects.get(id=pk)
-    serializer = serializers.UserSerializer(instance=queryset, data=request.data, partial=True)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-
-    return Response({
-        'success': True,
-        'message': 'Usuário alterado com sucesso!',
-        'data': serializer.data
-    })
-
+    except models.User.DoesNotExist:
+        return response_handler.not_found("Não foi encontrado nenhum usuário com esse id.")
 
 @api_view(['PUT'])
 @permission_classes([permissions.IsAuthenticated])
 @authentication_classes([TokenAuthentication])
 def delete(request, pk, validated_data, instance):
+    try:
+        queryset = models.User.objects.get(id=pk)
+        serializer = serializers.UserSerializer(instance=queryset, data=request.data, partial=True)
+        serializer.save()
 
-    queryset = models.User.objects.get(id=pk)
-    models.User.is_active = False
+        return response_handler.succes('Usuário deletado com sucesso.', [])
 
-    return Response({
-        'success': True,
-        'message': 'Usuário deletado com sucesso!',
-    })
+    except models.User.DoesNotExist:
+        return response_handler.not_found("Não foi encontrado nenhum usuário com esse id.")
 
 
 class UserLoginApiView(ObtainAuthToken):
