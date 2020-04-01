@@ -26,6 +26,19 @@ def get_all(request, *args, **kwargs):
         raise RuntimeError("Ocorreu um erro interno no servidor.")
 
 @api_view(['GET'])
+def get_all_disabled(request, *args, **kwargs):
+    try:
+        user = models.User.objects.filter(is_active=False)
+        serializer = serializers.UserSerializer(user, many=True)
+        return response_handler.success('Usuários ativos carregados com sucesso.', serializer.data, len(serializer.data))
+
+    except models.User.DoesNotExist:
+        return response_handler.not_found('Não há nenhum usuário desativo cadastrado no sistema.')
+
+    except RuntimeError:
+        raise RuntimeError("Ocorreu um erro interno no servidor.")
+
+@api_view(['GET'])
 def get_by_id(request, pk):
     try:
         user = models.User.objects.get(id=pk, is_active=True)
@@ -41,13 +54,15 @@ def get_by_id(request, pk):
 
 @api_view(['POST'])
 def create(request, *args, **kwargs):
-    serializer = serializers.UserSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return response_handler.success('Usuário cadastrado com sucesso.', serializer.data)
-    else:
-        return response_handler.error_has_ocurred('Ocorreu um erro na criação do usuário.', [])
-
+    try:
+        serializer = serializers.UserSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return response_handler.success('Usuário cadastrado com sucesso.', serializer.data)
+        else:
+            return response_handler.error_has_ocurred('Ocorreu um erro na criação do usuário.', [])
+    except RuntimeError:
+        raise RuntimeError("Ocorreu um erro interno no servidor.")
 
 @api_view(['PUT'])
 @permission_classes([permissions.IsAuthenticated])
@@ -66,6 +81,9 @@ def update(request, pk):
     except models.User.DoesNotExist:
         return response_handler.not_found("Não foi encontrado nenhum usuário com esse id.")
 
+    except RuntimeError:
+        raise RuntimeError("Ocorreu um erro interno no servidor.")
+
 @api_view(['PUT'])
 @permission_classes([permissions.IsAuthenticated])
 @authentication_classes([TokenAuthentication])
@@ -75,11 +93,13 @@ def delete(request, pk, validated_data, instance):
         serializer = serializers.UserSerializer(instance=queryset, data=request.data, partial=True)
         serializer.save()
 
-        return response_handler.succes('Usuário deletado com sucesso.', [])
+        return response_handler.success('Usuário deletado com sucesso.', [])
 
     except models.User.DoesNotExist:
         return response_handler.not_found("Não foi encontrado nenhum usuário com esse id.")
 
+    except RuntimeError:
+        raise RuntimeError("Ocorreu um erro interno no servidor.")
 
 class UserLoginApiView(ObtainAuthToken):
     """Handle creating user authentication tokens"""
