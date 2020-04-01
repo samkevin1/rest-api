@@ -147,3 +147,9 @@ AUTH_USER_MODEL = 'core.User'
 STATIC_ROOT = 'static/'
 
 django_heroku.settings(locals())
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
