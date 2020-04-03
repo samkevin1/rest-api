@@ -65,8 +65,8 @@ def create(request):
 
 
 @api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
-@authentication_classes([TokenAuthentication])
+# @permission_classes([permissions.IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
 def update(request, pk):
     try:
         queryset = models.Catalog.objects.get(id=pk)
@@ -108,7 +108,7 @@ def active(request, pk):
         catalog.is_active = True
         catalog.save()
 
-        return response_handler.success('Categoria ativada com sucesso.', serializer.data)
+        return response_handler.success('Categoria ativada com sucesso.', catalog.data)
 
     except models.Catalog.DoesNotExist:
         return response_handler.not_found("Não foi encontrada nenhuma categoria com esse id.")
