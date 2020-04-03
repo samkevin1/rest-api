@@ -8,7 +8,10 @@ from django.conf import settings
 class UserManager(BaseUserManager):
     """Manager for user profiles"""
 
-    def create_user(self, email, name, rg, cellphone, telephone, last_name, birth_date, cpf, password=None,):
+    def create_user(self, email, name, rg, cellphone,
+                    telephone, last_name, birth_date,
+                    cpf, password=None,
+                    ):
         """Create a new user profile"""
         if not email:
             raise ValueError('User must have an email address')
@@ -24,10 +27,11 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, name, password, birth_date):
+    def create_superuser(self, email, name, password):
         """Create and save a new superuser with given details"""
-        user = self.create_user(email, name, password, birth_date)
+        user = self.model(email=email, name=name)
 
+        user.set_password(password)
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
